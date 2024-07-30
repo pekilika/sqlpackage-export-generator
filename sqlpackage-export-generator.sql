@@ -21,18 +21,6 @@ SELECT @@SERVERNAME
 	-- INSERT @table_exclusions (TableName) VALUES  ('')
 	-- INSERT @schema_exclusions (SchemaName) VALUES ('')
 
-	INSERT @table_exclusions (TableName) VALUES  
-	('20240710_jploaddelete'),
-	('CommandLog'),
-	('__RefactorLog'),
-	( 'UniverseProductPrice'),
-	('UniverseProductPriceLoad'),
-	('ScriptLog'),
-	('UniverseSkuCost'),
-	('UniverseProductPriceLoadCleanupStatus');
-
-	INSERT @schema_exclusions (SchemaName) VALUES ('restore'),('sys'), ('divisioncatalog')
-
 	INSERT @powershell ( Line ) VALUES ( '$dt = Get-Date -format "yyyyMMddHHmmss"');
 	INSERT @powershell ( Line ) VALUES ( '$params = ' );
 	INSERT @powershell ( Line ) VALUES ( '"/a:Export",' );
