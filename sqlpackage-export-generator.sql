@@ -10,25 +10,24 @@ SELECT @@SERVERNAME
 	DECLARE @path NVARCHAR(500) = '';
 
 	/* parameters */
-	DECLARE @table_inclusions TABLE ( TableName nvarchar(500) );
-	DECLARE @table_exclusions TABLE ( TableName nvarchar(500) );
-	DECLARE @schema_inclusions TABLE ( SchemaName nvarchar(500) );
-	DECLARE @schema_exclusions TABLE ( SchemaName nvarchar(500) );
+	DECLARE @table_inclusions TABLE ( TableName NVARCHAR(500) );
+	DECLARE @table_exclusions TABLE ( TableName NVARCHAR(500) );
+	DECLARE @schema_inclusions TABLE ( SchemaName NVARCHAR(500) );
+	DECLARE @schema_exclusions TABLE ( SchemaName NVARCHAR(500) );
 	DECLARE @powershell TABLE ( RowID INT NOT NULL IDENTITY, Line NVARCHAR(MAX) );
 
 	-- INSERT @schema_inclusions (SchemaName) VALUES ('')
 	-- INSERT @table_inclusions (TableName) VALUES ('')
 	-- INSERT @table_exclusions (TableName) VALUES  ('')
 	-- INSERT @schema_exclusions (SchemaName) VALUES ('')
-
-	INSERT @powershell ( Line ) VALUES ( '$dt = Get-Date -format "yyyyMMddHHmmss"');
+		
 	INSERT @powershell ( Line ) VALUES ( '$params = ' );
 	INSERT @powershell ( Line ) VALUES ( '"/a:Export",' );
 	INSERT @powershell ( Line ) VALUES (
 	CONCAT('"/scs:""Server=tcp:', @servername, ',1433;Initial Catalog=', @datbasename,';Persist Security Info=False;User ID=', @userid,';Password=', @password, ';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Application Name=BacItUp;""",' )
 	);
 	INSERT @powershell ( Line ) VALUES (
-	CONCAT( '"/tf:""', @path, '\$dt', '.', @datbasename, '.bacpac""",' ));
+	CONCAT( '"/tf:""', @path, '\$(Get-Date -format "yyyyMMdHHmmss")', '.', @datbasename, '.bacpac""",' ));
 
 	IF NOT EXISTS( SELECT 1 FROM @table_inclusions )
 	BEGIN
